@@ -1,43 +1,39 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMicrophone, faFileAudio } from '@fortawesome/free-solid-svg-icons'
+import React, {useEffect, useRef, useState} from 'react'
 
 export default function HomePage(props) {
   // Destructuring props to access `setAudio` and `setFile` functions
-  const { setAudio, setFile } = props;
+  const { setFile, setAudio } = props;
 
   // State variables for recording
-  const [recordingStatus, setRecordingStatus] = useState('inactive'); // Tracks if recording is active/inactive
-  const [audioChunks, setAudioChunks] = useState([]); // Holds audio chunks from recording
-  const [duration, setDuration] = useState(0); // Tracks recording duration in seconds
+  const [recordingStatus, setRecordingStatus] = useState('inactive');   // Tracks if recording is active/inactive
+  const [audioChunks, setAudioChunks] = useState([]);                   // Holds audio chunks from recording
 
-  // Ref to store the media recorder instance
+  const [duration, setDuration] = useState(0);                        // Tracks recording duration in seconds
+
+                                                                                        // Ref to store the media recorder instance
   const mediaRecorder = useRef(null);
 
-  const mimeType = 'audio/webm'; // MIME type for audio format
+  const mimeType = 'audio/webm';                                                  // MIME type for audio format
 
-  // Function to start recording audio
   async function startRecording() {
     let tempStream;
     console.log('Start recording');
 
     try {
-      // Requests permission for microphone and sets up audio stream
-      const streamData = await navigator.mediaDevices.getUserMedia({
+                                                                                        // Requests permission for microphone and sets up audio stream
+      tempStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: false
       });
-      tempStream = streamData;
     } catch (err) {
-      console.log(err.message); // Logs error if microphone access fails
+      console.log(err.message);                                                         // Logs error if microphone access fails
       return;
     }
 
-    setRecordingStatus('recording'); // Changes status to 'recording'
+    setRecordingStatus('recording');                                               // Changes status to 'recording'
 
     // Creates new MediaRecorder instance with audio stream
-    const media = new MediaRecorder(tempStream, { type: mimeType });
-    mediaRecorder.current = media;
+    mediaRecorder.current = new MediaRecorder(tempStream, {type: mimeType});
 
     mediaRecorder.current.start(); // Starts recording audio
     let localAudioChunks = [];
