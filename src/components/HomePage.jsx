@@ -1,8 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react'
+import  {useEffect, useRef, useState} from 'react'
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import AnimatedShinyText from './ui/animated-shiny-text.jsx';
 
 export default function HomePage(props) {
-  // Destructuring props to access `setAudio` and `setFile` functions
+
   const { setFile, setAudio } = props;
+
+  HomePage.propTypes = {
+      setFile: PropTypes.func,
+      setAudio: PropTypes.func,
+  }
 
   // State variables for recording
   const [recordingStatus, setRecordingStatus] = useState('inactive');   // Tracks if recording is active/inactive
@@ -59,6 +68,7 @@ export default function HomePage(props) {
       setAudio(audioBlob);  // Updates parent component with the audio blob
       setAudioChunks([]);   // Resets `audioChunks` to empty
       setDuration(0);       // Resets the recording duration
+      console.log(duration);
     };
   }
 
@@ -78,12 +88,19 @@ export default function HomePage(props) {
     <main className='text-white flex-1  p-4 flex flex-col gap-3 text-center sm:gap-4  justify-center pb-20'>
             <h1 className='font-semibold text-5xl sm:text-6xl md:text-7xl'>Transcribify</h1>
             <button onClick={recordingStatus === 'recording' ? stopRecording : startRecording} className='flex specialBtn px-4 py-2 rounded-xl items-center text-base justify-between gap-4 mx-auto w-72 max-w-full my-4'>
-                <p className='text-blue-400'>{recordingStatus === 'inactive' ? 'Record' : `Stop recording`}</p>
+                <AnimatedShinyText ></AnimatedShinyText>
+
+                <AnimatedShinyText
+                    className=" inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-red-600 hover:duration-300 hover:dark:text-red-400">
+                    <span className={'text-xl'}>{recordingStatus === 'inactive' ? 'Record' : `Stop recording`}</span>
+                </AnimatedShinyText>
+
                 <div className='flex items-center gap-2'>
-                    {/* {duration !== 0 && (
-                        <p className='text-sm'>{duration}s</p>
-                    )} */}
-                    <i className={"fa-solid duration-200 fa-microphone " + (recordingStatus === 'recording' ? ' text-rose-300' : "")}></i>
+
+                </div>
+                <div className={'text-black flex items-center gap-2' }>
+                    <p className={(recordingStatus === 'recording' ? ' text-rose-500' : "")} >{duration}s</p>
+                    <FontAwesomeIcon  className={(recordingStatus === 'recording' ? ' text-rose-500' : "")}  icon={faMicrophone} />
                 </div>
             </button>
             <p className='text-base'>Or <label className='text-blue-400 cursor-pointer hover:text-blue-600 duration-200'>upload <input onChange={(e) => {

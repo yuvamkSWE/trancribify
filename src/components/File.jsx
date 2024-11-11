@@ -1,10 +1,20 @@
-import React from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenFancy } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from "prop-types";
 
 export default function File(props) {
 
+    // eslint-disable-next-line no-unused-vars
     const { file, setAudio, handleReset } = props;
+
+    File.propTypes = {
+        file: PropTypes.object,
+        setAudio: PropTypes.func,
+        handleReset : PropTypes.func
+    }
+
+
 
 
   return (
@@ -14,7 +24,7 @@ export default function File(props) {
 
         <div className=' flex flex-col text-left my-4 text-white items-center mx-auto'>
                 <h3 className='font-bold'>Name</h3>
-                <p className='truncate text-red-600'>{file ? file?.name : 'Custom audio'}</p>
+                <p className='truncate text-red-600'>{file ? file.name : 'Custom audio'}</p>
         </div>
 
         <div className='flex items-center justify-between gap-4'>
