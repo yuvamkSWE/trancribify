@@ -13,63 +13,62 @@ export default function HomePage(props) {
       setAudio: PropTypes.func,
   }
 
-  // State variables for recording
-  const [recordingStatus, setRecordingStatus] = useState('inactive');   // Tracks if recording is active/inactive
-  const [audioChunks, setAudioChunks] = useState([]);                   // Holds audio chunks from recording
+  const [recordingStatus, setRecordingStatus] = useState('inactive'); // Tracks if recording is active/inactive
+  const [audioChunks, setAudioChunks] = useState([]);                 // Holds audio chunks from recording
 
   const [duration, setDuration] = useState(0);                        // Tracks recording duration in seconds
 
-                                                                                        // Ref to store the media recorder instance
+  // Ref to store the media recorder instance
   const mediaRecorder = useRef(null);
 
-  const mimeType = 'audio/webm';                                                  // MIME type for audio format
+  const mimeType = 'audio/webm';// MIME type for audio format
 
   async function startRecording() {
-    let tempStream;
-    console.log('Start recording');
+        let tempStream;
+        console.log('Start recording');
 
-    try {
-                                                                                        // Requests permission for microphone and sets up audio stream
-      tempStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: false
-      });
-    } catch (err) {
-      console.log(err.message);                                                         // Logs error if microphone access fails
-      return;
-    }
+        try {
+        // Requests permission for microphone and sets up audio stream
+          tempStream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false
+          });
+        } catch (err) {
+          console.log(err.message);                   
+          return;
+        }
 
-    setRecordingStatus('recording');                                               // Changes status to 'recording'
+        setRecordingStatus('recording');  // Changes status to 'recording'
 
-    // Creates new MediaRecorder instance with audio stream
-    mediaRecorder.current = new MediaRecorder(tempStream, {type: mimeType});
+        // Creates new MediaRecorder instance with audio stream
+        mediaRecorder.current = new MediaRecorder(tempStream, {type: mimeType});
 
-    mediaRecorder.current.start(); // Starts recording audio
-    let localAudioChunks = [];
+        mediaRecorder.current.start(); // Starts recording audio
+        let localAudioChunks = [];
 
-    // Pushes audio data chunks into array as they're available
-    mediaRecorder.current.ondataavailable = (event) => {
-      if (typeof event.data === 'undefined' || event.data.size === 0) return;
-      localAudioChunks.push(event.data);
-    };
-    setAudioChunks(localAudioChunks); // Updates `audioChunks` state with recorded data
+        // Pushes audio data chunks into array as they're available
+        mediaRecorder.current.ondataavailable = (event) => {
+          if (typeof event.data === 'undefined' || event.data.size === 0) return;
+          localAudioChunks.push(event.data);
+        };
+        setAudioChunks(localAudioChunks); // Updates `audioChunks` state with recorded data
   }
 
   // Function to stop recording and create an audio blob
   async function stopRecording() {
-    setRecordingStatus('inactive'); // Stops the recording status
-    console.log('Stop recording');
+          setRecordingStatus('inactive'); // Stops the recording status
+          console.log('Stop recording');
 
-    mediaRecorder.current.stop(); // Stops MediaRecorder instance
+          mediaRecorder.current.stop(); // Stops MediaRecorder instance
 
-    // After stopping, creates a Blob from `audioChunks` and passes it to `setAudio`
-    mediaRecorder.current.onstop = () => {
-      const audioBlob = new Blob(audioChunks, { type: mimeType });
-      setAudio(audioBlob);  // Updates parent component with the audio blob
-      setAudioChunks([]);   // Resets `audioChunks` to empty
-      setDuration(0);       // Resets the recording duration
-      console.log(duration);
-    };
+          // After stopping, creates a Blob from `audioChunks` and passes it to `setAudio`
+          mediaRecorder.current.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: mimeType });
+            setAudio(audioBlob);  // Updates parent component with the audio blob
+            setAudioChunks([]);   // Resets `audioChunks` to empty
+            setDuration(0);       // Resets the recording duration
+            console.log(duration);
+          };
   }
 
   // Effect hook to track and increment the recording duration
