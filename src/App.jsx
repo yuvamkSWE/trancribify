@@ -32,17 +32,9 @@ export default function App() {
         <Header />
 
 
-        {
-          audioAvailable ?
-            (
-              // File.jsx if there is some file/audio
-              <File file={file} audio={setAudio} handleReset={handleReset} />
-            )
-            :
-            (
-              // If not homepage.jsx
-              <HomePage setFile={setFile} setAudio={setAudio}/>
-            )
+        {audioAvailable ?
+            (<File file={file} audio={setAudio} handleReset={handleReset} />) :    // File.jsx if there is some file/audio
+            (<HomePage setFile={setFile} setAudio={setAudio}/>)
         }
 
 
