@@ -3,6 +3,8 @@ import { useState } from 'react'
 import HomePage from './components/HomePage'
 import Header from './components/Header'
 import File from './components/File';
+import Transcribe from './components/Transcribe';
+import Result from './components/Result';
 
 
 
@@ -13,6 +15,8 @@ export default function App() {
 
   const [file, setFile] = useState(null);
   const [audio, setAudio] = useState(null);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
 
 
   const audioAvailable = file || audio;
@@ -31,11 +35,16 @@ export default function App() {
 
         <Header />
 
-
-        {audioAvailable ?
-            (<File file={file} audio={setAudio} handleReset={handleReset} />) :    // File.jsx if there is some file/audio
-            (<HomePage setFile={setFile} setAudio={setAudio}/>)
+        {
+          result ? (<Result /> 
+          ) :  loading ? (<Transcribe />
+          ) : audioAvailable ? 
+          (<File file={file} audio={setAudio} handleReset={handleReset} />) :    // File.jsx if there is some file/audio
+          (<HomePage setFile={setFile} setAudio={setAudio}/>)
         }
+
+
+       
 
 
 
