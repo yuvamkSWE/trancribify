@@ -15,7 +15,7 @@ export default function App() {
 
   const [file, setFile] = useState(null);
   const [audio, setAudio] = useState(null);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(true);
   const [loading, setLoading] = useState(true);
 
 
@@ -39,7 +39,7 @@ export default function App() {
           result ? (<Result /> 
           ) :  loading ? (<Transcribe />
           ) : audioAvailable ? 
-          (<File file={file} audio={setAudio} handleReset={handleReset} />) :    // File.jsx if there is some file/audio
+          (<File file={file} audio={setAudio} handleReset={handleReset} />) :    
           (<HomePage setFile={setFile} setAudio={setAudio}/>)
         }
 
