@@ -15,8 +15,8 @@ export default function App() {
 
   const [file, setFile] = useState(null);
   const [audio, setAudio] = useState(null);
-  const [result, setResult] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(null);
 
 
   const audioAvailable = file || audio;

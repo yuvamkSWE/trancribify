@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GradualSpacing from './ui/gradual-spacing'
 
 export default function Result() {
+
+  const [buttonBg, setButtonBg] = useState(null);
+
   return (
     <main className='flex items-center flex-1 flex-col justify-center gap-10 md:gap-14 py-24'>
 
@@ -14,6 +17,18 @@ export default function Result() {
                 </span>
 
             </h1>
+
+            <div className="flex items-center gap-5 text-center justify-center text-xl">
+
+              <button className={'border-white border rounded-full p-3 py-2' + buttonBg ? 'bg-black' : 'bg-transparent' }>
+                Transcribify
+              </button>
+              <button className={'border-white border rounded-full p-3 py-2'}>
+                Translatifiy
+              </button>
+
+            </div>
+            
 
         </div>
 
